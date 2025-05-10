@@ -1,9 +1,9 @@
 package com.laboratorio.api;
 
+import com.laboratorio.clientapilibrary.utils.ReaderConfig;
 import com.laboratorio.twitterapiinterface.TwitterAccountApi;
 import com.laboratorio.twitterapiinterface.impl.TwitterAccountApiImpl;
 import com.laboratorio.twitterapiinterface.model.TwitterAccount;
-import com.laboratorio.twitterapiinterface.utils.TwitterApiConfig;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,14 +13,15 @@ import org.junit.jupiter.api.Test;
  * @author Rafael
  * @version 1.0
  * @created 19/12/2024
- * @updated 19/12/2024
+ * @updated 10/05/2025
  */
 public class TwitterAccountApiTest {
     private TwitterAccountApi accountApi;
     
     @BeforeEach
     public void initApi() {
-        String accessToken = TwitterApiConfig.getInstance().getProperty("test_access_token");
+        ReaderConfig config = new ReaderConfig("config//twitter_api.properties");
+        String accessToken = config.getProperty("test_access_token");
         this.accountApi = new TwitterAccountApiImpl(accessToken);
     }
     
