@@ -1,11 +1,11 @@
 package com.laboratorio.twitterapiinterface.impl;
 
 import com.google.gson.JsonSyntaxException;
-import com.laboratorio.clientapilibrary.exceptions.ApiClientException;
 import com.laboratorio.clientapilibrary.model.ApiMethodType;
 import com.laboratorio.clientapilibrary.model.ApiRequest;
 import com.laboratorio.clientapilibrary.model.ApiResponse;
 import com.laboratorio.twitterapiinterface.TwitterStatusApi;
+import com.laboratorio.twitterapiinterface.exception.TwitterException;
 import com.laboratorio.twitterapiinterface.model.TwitterStatus;
 import com.laboratorio.twitterapiinterface.model.request.TwitterStatusRequest;
 
@@ -14,7 +14,7 @@ import com.laboratorio.twitterapiinterface.model.request.TwitterStatusRequest;
  * @author Rafael
  * @version 1.0
  * @created 19/12/2024
- * @updated 19/12/2024
+ * @updated 04/05/2025
  */
 public class TwitterStatusApiImpl extends TwitterBaseApi implements TwitterStatusApi {
 
@@ -37,14 +37,11 @@ public class TwitterStatusApiImpl extends TwitterBaseApi implements TwitterStatu
             request.addApiHeader("Authorization", "Bearer " + this.accessToken);
             
             ApiResponse response = this.client.executeApiRequest(request);
+            log.debug("Response: " + response.getResponseStr());
             
             return this.gson.fromJson(response.getResponseStr(), TwitterStatus.class);
-        } catch (JsonSyntaxException e) {
-            logException(e);
-            throw  e;
-        } catch (ApiClientException e) {
-            throw  e;
+        } catch (Exception e) {
+            throw new TwitterException("Error posteando un estado en Twitter: " + text, e);
         }
     }
-    
 }

@@ -1,11 +1,10 @@
 package com.laboratorio.twitterapiinterface.impl;
 
-import com.google.gson.JsonSyntaxException;
-import com.laboratorio.clientapilibrary.exceptions.ApiClientException;
 import com.laboratorio.clientapilibrary.model.ApiMethodType;
 import com.laboratorio.clientapilibrary.model.ApiRequest;
 import com.laboratorio.clientapilibrary.model.ApiResponse;
 import com.laboratorio.twitterapiinterface.TwitterAccountApi;
+import com.laboratorio.twitterapiinterface.exception.TwitterException;
 import com.laboratorio.twitterapiinterface.model.TwitterAccount;
 
 /**
@@ -13,7 +12,7 @@ import com.laboratorio.twitterapiinterface.model.TwitterAccount;
  * @author Rafael
  * @version 1.0
  * @created 19/12/2024
- * @updated 19/12/2024
+ * @updated 04/05/2025
  */
 public class TwitterAccountApiImpl extends TwitterBaseApi implements TwitterAccountApi {
     public TwitterAccountApiImpl(String accessToken) {
@@ -31,13 +30,11 @@ public class TwitterAccountApiImpl extends TwitterBaseApi implements TwitterAcco
             request.addApiHeader("Authorization", "Bearer " + this.accessToken);
             
             ApiResponse response = this.client.executeApiRequest(request);
+            log.debug("Response: " + response.getResponseStr());
             
             return this.gson.fromJson(response.getResponseStr(), TwitterAccount.class);
-        } catch (JsonSyntaxException e) {
-            logException(e);
-            throw e;
-        } catch (ApiClientException e) {
-            throw e;
+        } catch (Exception e) {
+            throw new TwitterException("Error recuperando la información de la cuenta Twitter con id: " + id, e);
         }
     }
 
@@ -52,13 +49,11 @@ public class TwitterAccountApiImpl extends TwitterBaseApi implements TwitterAcco
             request.addApiHeader("Authorization", "Bearer " + this.accessToken);
             
             ApiResponse response = this.client.executeApiRequest(request);
+            log.debug("Response: " + response.getResponseStr());
             
             return this.gson.fromJson(response.getResponseStr(), TwitterAccount.class);
-        } catch (JsonSyntaxException e) {
-            logException(e);
-            throw e;
-        } catch (ApiClientException e) {
-            throw e;
+        } catch (Exception e) {
+            throw new TwitterException("Error recuperando la información de la cuenta Twitter con nombre: " + username, e);
         }
     }
     

@@ -1,11 +1,10 @@
 package com.laboratorio.twitterapiinterface.impl;
 
-import com.google.gson.JsonSyntaxException;
-import com.laboratorio.clientapilibrary.exceptions.ApiClientException;
 import com.laboratorio.clientapilibrary.model.ApiMethodType;
 import com.laboratorio.clientapilibrary.model.ApiRequest;
 import com.laboratorio.clientapilibrary.model.ApiResponse;
 import com.laboratorio.twitterapiinterface.TwitterSessionApi;
+import com.laboratorio.twitterapiinterface.exception.TwitterException;
 import com.laboratorio.twitterapiinterface.model.TwitterSession;
 
 /**
@@ -13,7 +12,7 @@ import com.laboratorio.twitterapiinterface.model.TwitterSession;
  * @author Rafael
  * @version 1.0
  * @created 19/12/2024
- * @updated 19/12/2024
+ * @updated 04/05/2025
  */
 public class TwitterSessionApiImpl extends TwitterBaseApi implements TwitterSessionApi {
     private final String refreshToken;
@@ -37,13 +36,11 @@ public class TwitterSessionApiImpl extends TwitterBaseApi implements TwitterSess
             request.addApiPathParam("client_id", clientId);
             
             ApiResponse response = this.client.executeApiRequest(request);
+            log.debug("Response: " + response.getResponseStr());
             
             return this.gson.fromJson(response.getResponseStr(), TwitterSession.class);
-        } catch (JsonSyntaxException e) {
-            logException(e);
-            throw  e;
-        } catch (ApiClientException e) {
-            throw  e;
+        } catch (Exception e) {
+            throw  new TwitterException("Error refrescando la sesión de Twitter", e);
         }
     }
 }

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
  * @author Rafael
  * @version 1.0
  * @created 19/12/2024
- * @updated 10/05/2025
+ * @updated 04/05/2025
  */
 public class TwitterAccountApiTest {
     private TwitterAccountApi accountApi;
@@ -27,7 +27,7 @@ public class TwitterAccountApiTest {
     
     /* @Test
     public void getAccountByIdTest() {
-        String id = "1657362213437427713";
+        String id = "1622226175455002624";
         
         TwitterAccount account = this.accountApi.getAccountById(id);
         
